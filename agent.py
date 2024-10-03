@@ -13,7 +13,7 @@ from collections import defaultdict
 
 # Détermine le chemin d'accès au fichier config.json
 if getattr(sys, "frozen", False):
-    # Si l'application est congelée (exécutable)
+
     application_path = sys._MEIPASS
 else:
     application_path = os.path.dirname(os.path.abspath(__file__))
@@ -80,7 +80,7 @@ def select_interface_gui():
     tk.Label(root, text="Veuillez choisir une interface réseau:").pack(pady=5)
     combo = ttk.Combobox(root, values=interfaces, state="readonly")
     combo.pack(pady=5)
-    combo.current(0)  # Sélectionne la première interface par défaut
+    combo.current(0)  # Interface par default
 
     tk.Button(root, text="Valider", command=on_select).pack(pady=5)
 

@@ -78,7 +78,7 @@ def dashboard():
 # Modifier la route
 @app.route("/source/<path:src_ip>", methods=["GET"])
 def source_alerts(src_ip):
-    # Charger les alertes depuis le fichier
+
     with open(alerts_file, "r") as f:
         alerts = json.load(f)
 
@@ -128,12 +128,10 @@ def unhandled_exception(e):
 
 
 def open_browser():
-    time.sleep(1)  # Attendre que le serveur démarre
+    time.sleep(1)
     webbrowser.open("http://127.0.0.1:5000/")
 
 
 if __name__ == "__main__":
-    threading.Thread(
-        target=open_browser
-    ).start()  # Démarrer le thread pour ouvrir le navigateur
+    threading.Thread(target=open_browser).start()
     app.run(host="0.0.0.0", port=5000)

@@ -1,7 +1,4 @@
-scapy
-psutil
-requests
 flask
 flask-bootstrap
-tkinter
+
 
