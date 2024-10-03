@@ -18,6 +18,6 @@ L'application est composée de deux parties principales :
 2. **Configurer l'Agent** : Modifiez le fichier `config.json` pour sélectionner IP du server.
 3. **Lancer l'Agent et le Serveur** : Exécutez `agent.exe` pour démarrer l'agent de surveillance et `python main.py` pour démarrer le serveur centralisé.
 
-Vous aurait une interface graphique pour visualiser les alertes et les événements en temps réel. Il faut rafrachir la page pour voir les alertes. Cette fonctionnalité sera améliorée dans les prochaines versions.
+## 📶 A propos.
 
-👨‍💻 _Conçu pour aider à renforcer la sécurité de votre réseau en identifiant rapidement les menaces potentielles._
+Vous aurait une interface graphique pour visualiser les alertes et les événements en temps réel. Il faut rafrachir la page pour voir les alertes. Cette fonctionnalité sera améliorée dans les prochaines versions.

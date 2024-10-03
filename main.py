@@ -12,22 +12,22 @@ import time
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
-# Chemin vers le fichier des alertes
+# Chemin du fichier qui contient les alertes
 alerts_file = "alerts.json"
 
-# Assurer que le fichier des alertes existe
+# Créer le fichier des alertes s'il n'existe pas encore
 if not os.path.exists(alerts_file):
     with open(alerts_file, "w") as f:
         json.dump([], f)
 
-# Configurer le logging
+# Configurer le système de logging pour enregistrer les événements dans server.log
 logging.basicConfig(
     filename="server.log",
     level=logging.INFO,
     format="%(asctime)s %(levelname)s: %(message)s",
 )
 
-# File d'attente pour les alertes en temps réel
+# File d'attente pour gérer les alertes en temps réel
 alert_queue = queue.Queue()
 
 
@@ -35,11 +35,11 @@ alert_queue = queue.Queue()
 def receive_alert():
     alert = request.json
 
-    # Assigner un identifiant unique à chaque alerte
+    # Créer un ID unique basé sur le timestamp pour chaque alerte
     alert_id = int(datetime.now().timestamp() * 1000)
     alert["id"] = alert_id
 
-    # Enregistrer l'alerte dans le fichier alerts.json
+    # Lire le contenu du fichier d'alertes, le mettre à jour, puis le sauvegarder
     try:
         with open(alerts_file, "r") as f:
             data = json.load(f)
@@ -51,7 +51,7 @@ def receive_alert():
     with open(alerts_file, "w") as f:
         json.dump(data, f, indent=4)
 
-    # Mettre l'alerte dans la file d'attente pour les SSE
+    # Ajouter l'alerte à la file d'attente pour être envoyée en temps réel
     alert_queue.put(alert)
 
     logging.info(f"Nouvelle alerte reçue: {alert}")
@@ -60,11 +60,11 @@ def receive_alert():
 
 @app.route("/", methods=["GET"])
 def dashboard():
-    # Charger les alertes depuis le fichier
+    # Charger toutes les alertes stockées dans le fichier JSON
     with open(alerts_file, "r") as f:
         alerts = json.load(f)
 
-    # Regrouper les alertes par adresse IP source
+    # Grouper les alertes par adresse IP source pour un affichage organisé
     grouped_alerts = {}
     for alert in alerts:
         src_ip = alert.get("src_ip", "Inconnu")
@@ -75,14 +75,13 @@ def dashboard():
     return render_template("dashboard.html", grouped_alerts=grouped_alerts)
 
 
-# Modifier la route
 @app.route("/source/<path:src_ip>", methods=["GET"])
 def source_alerts(src_ip):
-
+    # Charger toutes les alertes depuis le fichier JSON
     with open(alerts_file, "r") as f:
         alerts = json.load(f)
 
-    # Filtrer les alertes pour l'IP source donnée
+    # Filtrer les alertes par adresse IP source spécifique
     source_alerts = [a for a in alerts if a.get("src_ip") == src_ip]
 
     return render_template("source_alerts.html", src_ip=src_ip, alerts=source_alerts)
@@ -90,11 +89,11 @@ def source_alerts(src_ip):
 
 @app.route("/alert/<int:alert_id>", methods=["GET"])
 def alert_detail(alert_id):
-    # Charger les alertes depuis le fichier
+    # Charger toutes les alertes stockées dans le fichier JSON
     with open(alerts_file, "r") as f:
         alerts = json.load(f)
 
-    # Trouver l'alerte avec l'ID correspondant
+    # Chercher l'alerte spécifique par son ID
     alert = next((a for a in alerts if a["id"] == alert_id), None)
 
     if alert:
@@ -103,13 +102,13 @@ def alert_detail(alert_id):
         return "Alerte non trouvée", 404
 
 
-# Filtre pour formater la date
+# Filtre pour afficher la date dans un format lisible
 @app.template_filter("datetimeformat")
 def datetimeformat(value):
     return datetime.fromtimestamp(value).strftime("%Y-%m-%d %H:%M:%S")
 
 
-# Route pour les Server-Sent Events
+# Route pour les alertes en temps réel (Server-Sent Events)
 @app.route("/alerts")
 def alerts():
     def generate():
@@ -120,7 +119,7 @@ def alerts():
     return Response(generate(), mimetype="text/event-stream")
 
 
-# Gestion des erreurs internes du serveur
+# Gérer les erreurs internes du serveur pour un retour d'erreur clair
 @app.errorhandler(Exception)
 def unhandled_exception(e):
     app.logger.error(f"Exception: {e}")
@@ -128,10 +127,12 @@ def unhandled_exception(e):
 
 
 def open_browser():
+    # Attendre une seconde puis ouvrir le navigateur web par défaut sur le tableau de bord
     time.sleep(1)
     webbrowser.open("http://127.0.0.1:5000/")
 
 
 if __name__ == "__main__":
+    # Ouvrir automatiquement le navigateur web puis démarrer l'application Flask
     threading.Thread(target=open_browser).start()
     app.run(host="0.0.0.0", port=5000)
