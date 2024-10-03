@@ -1,0 +1,57 @@
+{% extends "bootstrap/base.html" %} {% block title %}Tableau de Bord des
+Alertes{% endblock %} {% block styles %}
+<style>
+  body {
+    background-color: #1a1a1a;
+    color: #e6e6e6;
+  }
+  .table {
+    margin-top: 20px;
+  }
+  .table-hover tbody tr:hover {
+    background-color: #333333;
+  }
+  .table thead th {
+    background-color: #333333;
+    color: #ffffff;
+  }
+  .alert-count {
+    font-size: 0.9em;
+    color: #cccccc;
+  }
+  a {
+    color: #1e90ff;
+  }
+  a:hover {
+    color: #63b8ff;
+    text-decoration: none;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <h1 class="my-4 text-center">Tableau de Bord des Alertes</h1>
+  <table class="table table-dark table-hover">
+    <thead>
+      <tr>
+        <th>Adresse IP Source</th>
+        <th>Nombre d'Alertes</th>
+        <th>Dernière Activité</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for src_ip, alerts in grouped_alerts.items() %} {% set encoded_src_ip =
+      src_ip | urlencode %}
+      <tr>
+        <td>
+          <a href="{{ url_for('source_alerts', src_ip=encoded_src_ip) }}"
+            >{{ src_ip }}</a
+          >
+        </td>
+        <td>{{ alerts|length }}</td>
+        <td>{{ alerts[-1].timestamp | datetimeformat }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "bootstrap/base.html" %} {% block title %}Alertes pour {{ src_ip }}{%
+endblock %} {% block styles %}
+<style>
+  body {
+    background-color: #1a1a1a;
+    color: #e6e6e6;
+  }
+  .table {
+    margin-top: 20px;
+  }
+  .table-hover tbody tr:hover {
+    background-color: #333333;
+  }
+  .table thead th {
+    background-color: #333333;
+    color: #ffffff;
+  }
+  a {
+    color: #1e90ff;
+  }
+  a:hover {
+    color: #63b8ff;
+    text-decoration: none;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <h1 class="my-4 text-center">Alertes pour {{ src_ip }}</h1>
+  <table class="table table-dark table-hover">
+    <thead>
+      <tr>
+        <th>Type d'Alerte</th>
+        <th>Adresse IP Destination</th>
+        <th>Détails</th>
+        <th>Horodatage</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for alert in alerts %}
+      <tr>
+        <td>{{ alert.type }}</td>
+        <td>{{ alert.dst_ip or 'N/A' }}</td>
+        <td>
+          <a href="{{ url_for('alert_detail', alert_id=alert.id) }}"
+            >Voir détails</a
+          >
+        </td>
+        <td>{{ alert.timestamp | datetimeformat }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-secondary"
+    >Retour au tableau de bord</a
+  >
+</div>
+{% endblock %}
