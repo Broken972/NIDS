@@ -6,6 +6,8 @@ import os
 from datetime import datetime
 import threading
 import queue
+import webbrowser
+import time
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -73,7 +75,7 @@ def dashboard():
     return render_template("dashboard.html", grouped_alerts=grouped_alerts)
 
 
-# Modifier la route pour utiliser le convertisseur 'path'
+# Modifier la route
 @app.route("/source/<path:src_ip>", methods=["GET"])
 def source_alerts(src_ip):
     # Charger les alertes depuis le fichier
@@ -125,5 +127,13 @@ def unhandled_exception(e):
     return jsonify({"error": "Unhandled Exception"}), 500
 
 
+def open_browser():
+    time.sleep(1)  # Attendre que le serveur démarre
+    webbrowser.open("http://127.0.0.1:5000/")
+
+
 if __name__ == "__main__":
+    threading.Thread(
+        target=open_browser
+    ).start()  # Démarrer le thread pour ouvrir le navigateur
     app.run(host="0.0.0.0", port=5000)

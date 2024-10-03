@@ -98,6 +98,7 @@ def send_alert(detection, app):
         app.log_message(f"Erreur lors de l'envoi de l'alerte : {e}")
 
 
+# detection functions
 def detect_ping_sweep(packet_info, app):
     src_ip = packet_info["src_ip"]
     icmp_counts[src_ip] += 1
@@ -111,7 +112,7 @@ def detect_ping_sweep(packet_info, app):
             "hostname": HOSTNAME,
         }
         send_alert(detection, app)
-        icmp_counts[src_ip] = 0  # Réinitialiser le compteur
+        icmp_counts[src_ip] = 0
 
 
 def detect_port_scan(packet_info, app):
@@ -128,7 +129,7 @@ def detect_port_scan(packet_info, app):
             "hostname": HOSTNAME,
         }
         send_alert(detection, app)
-        port_scan_counts[src_ip].clear()  # Réinitialiser le set
+        port_scan_counts[src_ip].clear()
 
 
 def detect_dos(packet_info, app):
@@ -138,7 +139,7 @@ def detect_dos(packet_info, app):
 
     # Vérifier si la fenêtre de temps est dépassée
     if current_time - dos_counts[dst_ip]["timestamp"] > DOS_TIME_WINDOW:
-        dos_counts[dst_ip]["count"] = 1  # Réinitialiser le compteur
+        dos_counts[dst_ip]["count"] = 1
         dos_counts[dst_ip]["timestamp"] = current_time
 
     if dos_counts[dst_ip]["count"] >= DOS_THRESHOLD:
@@ -150,7 +151,7 @@ def detect_dos(packet_info, app):
             "hostname": HOSTNAME,
         }
         send_alert(detection, app)
-        dos_counts[dst_ip]["count"] = 0  # Réinitialiser le compteur
+        dos_counts[dst_ip]["count"] = 0
 
 
 def detect_ssh_telnet(packet_info, app):
@@ -158,7 +159,7 @@ def detect_ssh_telnet(packet_info, app):
     dst_ip = packet_info["dst_ip"]
     dst_port = packet_info["dst_port"]
 
-    if dst_port in [22, 23]:  # Ports SSH et Telnet
+    if dst_port in [22, 23]:
         connection = (src_ip, dst_ip, dst_port)
         if connection not in ssh_telnet_connections:
             ssh_telnet_connections.add(connection)
