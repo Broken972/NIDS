@@ -4397,3 +4397,9 @@
 2024-10-03 14:31:28,453 INFO: Nouvelle alerte re�ue: {'type': 'Attaque DoS', 'dst_ip': '100.87.151.6', 'count': 100, 'timestamp': 1727958688.4075227, 'hostname': 'Laptop_Broken', 'id': 1727958688420}
 2024-10-03 14:31:28,453 INFO: 172.16.0.63 - - [03/Oct/2024 14:31:28] "POST /receive_alert HTTP/1.1" 200 -
 2024-10-03 15:00:20,582 INFO: 172.16.0.63 - - [03/Oct/2024 15:00:20] "GET /source/100.89.162.92 HTTP/1.1" 200 -
+2024-10-03 16:22:06,116 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.20.10.4:5000
+2024-10-03 16:22:06,117 INFO: [33mPress CTRL+C to quit[0m
+2024-10-03 16:22:07,339 INFO: 127.0.0.1 - - [03/Oct/2024 16:22:07] "GET / HTTP/1.1" 200 -
