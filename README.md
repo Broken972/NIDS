@@ -1,14 +1,15 @@
-# 📡 Surveillance Réseau avec Détection d'Intrusion en Temps Réel 🚨
+# 📡 BIG NIDS 🚨
 
 Ce projet est une application de **surveillance réseau** qui détecte les activités suspectes telles que :
 
 - 🚀 **Scans de ports**
-- 📶 **Balayages ICMP (Ping Sweep)**
+- 📶 **Balayages ICMP (Ping)**
 - 🛑 **Attaques DoS (Denial of Service)**
+- 🕵️ **Tentatives de connexion SSH/telnet**
 
 L'application est composée de deux parties principales :
 
-- 🤖 **Agent de Surveillance** : Un programme Python qui capture le trafic réseau, analyse les paquets et envoie des alertes au serveur en cas de détection d'activités suspectes.
+- 🤖 **Agent de Surveillance** : Un agent.exe qui capture le trafic réseau, analyse les paquets et envoie des alertes au serveur en cas de détection d'activités suspectes.
 - 🖥️ **Serveur de Surveillance** : Un serveur centralisé qui reçoit les alertes de tous les agents déployés sur le réseau, les analyse, et affiche une interface pour la gestion et la visualisation des événements.
 
 ## 🚀 Comment Commencer ?

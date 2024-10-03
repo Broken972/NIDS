@@ -1,3 +1,4 @@
+# import
 import psutil
 import sys
 import json
@@ -43,9 +44,9 @@ ssh_telnet_connections = set()
 dns_packet_counts = defaultdict(int)
 
 # Seuils pour détection
-ICMP_THRESHOLD = 10  # Nombre de pings pour considérer un ping sweep
-PORT_SCAN_THRESHOLD = 20  # Nombre de ports différents pour considérer un scan de ports
-DOS_THRESHOLD = 100  # Nombre de paquets en peu de temps pour considérer une attaque DoS
+ICMP_THRESHOLD = 10  # ping
+PORT_SCAN_THRESHOLD = 20  # scan de ports
+DOS_THRESHOLD = 100  # DOS
 DOS_TIME_WINDOW = 5  # Fenêtre de temps en secondes pour le comptage DoS
 DNS_SIZE_THRESHOLD = 512  # Seuil de taille pour les paquets DNS
 DNS_COUNT_THRESHOLD = 10  # Nombre de paquets DNS volumineux pour considérer une attaque
@@ -190,7 +191,7 @@ def detect_oversized_dns(packet_info, app, packet):
                     "hostname": HOSTNAME,
                 }
                 send_alert(detection, app)
-                dns_packet_counts[src_ip] = 0  # Réinitialiser le compteur
+                dns_packet_counts[src_ip] = 0
 
 
 def analyze_packet(packet, app):
